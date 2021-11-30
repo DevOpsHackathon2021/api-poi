@@ -24,3 +24,12 @@ jobs:
       run: ls
     - name: Test
       run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
+
+    - uses: nashmaniac/create-issue-action@v1.1
+      name: Create Issue Action
+      with:
+        title: Build Failed
+        token: ${{secrets.GITHUB_TOKEN}}
+        assignees: ${{github.actor}}
+        labels: worflow-failed
+        body: Workflow failed for commit ${{github.sha}}
