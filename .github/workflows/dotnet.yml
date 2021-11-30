@@ -23,4 +23,4 @@ jobs:
     - name: ls
       run: ls
     - name: Test
-      run: dotnet test Api-Poi\tests\UnitTests\UnitTests.csproj --no-build --verbosity normal
+      run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
