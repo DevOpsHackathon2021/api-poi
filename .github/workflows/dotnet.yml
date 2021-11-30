@@ -20,5 +20,7 @@ jobs:
       run: dotnet restore
     - name: Build
       run: dotnet build --no-restore
+    - name: ls
+      run: ls
     - name: Test
-      run: dotnet test tests\UnitTests\UnitTests.csproj --no-build --verbosity normal
+      run: dotnet test Api-Poi\tests\UnitTests\UnitTests.csproj --no-build --verbosity normal
