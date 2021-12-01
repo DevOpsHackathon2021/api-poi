@@ -15,7 +15,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 3.1.x
     - name: Restore dependencies
       run: dotnet restore poi.sln
     - name: Build
@@ -23,6 +23,15 @@ jobs:
 
     - name: Test
       run: dotnet test poi.sln --filter FullyQualifiedName!~IntegrationTests --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+
+    - name: Publish
+      run: dotnet publish poi.sln
+
+    - name: ls
+      run: ls -R
+
+    - name: Test vstest
+      run: dotnet vstest bin\Debug\netcoreapp3.0\publish\unittests.dll --collect:"XPlat Code Coverage"
 
     - name: ls
       run: ls -R
