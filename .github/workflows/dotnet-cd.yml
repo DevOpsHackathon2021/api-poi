@@ -27,6 +27,7 @@ jobs:
           az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
 
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     env:
       WEBAPP: openhackx6e34ru4poi
