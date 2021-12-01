@@ -24,7 +24,7 @@ jobs:
       run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal
 
     - name: Test
-      run: dotnet test tests/UnitTests/UnitTests.csproj --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      run: dotnet test tests/UnitTests/UnitTests.csproj --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: ls
       run: ls
