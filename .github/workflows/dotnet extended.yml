@@ -31,7 +31,7 @@ jobs:
       run: ls -R
 
     - name: Test vstest
-      run: dotnet vstest bin\Debug\netcoreapp3.0\publish\unittests.dll --collect:"XPlat Code Coverage"
+      run: dotnet vstest /tests/UnitTests/bin/Debug/netcoreapp3.1/UnitTests.dll --collect:"XPlat Code Coverage"
 
     - name: ls
       run: ls -R
