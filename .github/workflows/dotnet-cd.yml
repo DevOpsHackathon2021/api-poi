@@ -29,10 +29,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    env:
-      WEBAPP: 'openhackx6e34ru4poi'
-      ACRNAME: 'openhackx6e34ru4acr'
-      BASEIMAGETAG: ${{ github.sha }}
 
     steps:
       - name: Login to Azure
@@ -42,6 +38,6 @@ jobs:
 
       - uses: azure/webapps-deploy@v2
         with:
-          app-name: '${env.WEBAPP}'
+          app-name: openhackx6e34ru4poi
           slot-name: production
-          images: '${env.ACRNAME}.azurecr.io/devopsoh/api-poi:${env.BASEIMAGETAG}'
+          images: 'openhackx6e34ru4acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}'
