@@ -37,5 +37,5 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: '${WEBAPP}'
-          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          slot-name: production
           images: '${ACRNAME}.azurecr.io/devopsoh/api-poi:${BASEIMAGETAG}'
