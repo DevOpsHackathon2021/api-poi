@@ -25,3 +25,16 @@ jobs:
         run: |
           cd web
           az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
+
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      WEBAPP: openhackx6e34ru4poi
+      ACRNAME: 'openhackx6e34ru4acr'
+
+    steps:
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: '${WEBAPP}'
+          publish-profile: ${{ secrets.azureWebAppPublishProfile }}
+          images: '${ACRNAME}.azurecr.io/devopsoh/api-poi:${BASEIMAGETAG}'
