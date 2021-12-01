@@ -30,7 +30,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     env:
-      WEBAPP: openhackx6e34ru4poi
+      WEBAPP: 'openhackx6e34ru4poi'
       ACRNAME: 'openhackx6e34ru4acr'
 
     steps:
