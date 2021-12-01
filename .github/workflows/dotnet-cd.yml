@@ -39,5 +39,5 @@ jobs:
       - uses: azure/webapps-deploy@v2
         with:
           app-name: openhackx6e34ru4poi
-          slot-name: production
+          slot-name: staging
           images: 'openhackx6e34ru4acr.azurecr.io/devopsoh/api-poi:${{ github.sha }}'
