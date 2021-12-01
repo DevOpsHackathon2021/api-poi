@@ -21,11 +21,8 @@ jobs:
     - name: Build
       run: dotnet build poi.sln --configuration Release --no-restore
 
-    - name: Publish (needed for vstest)
-      run: dotnet publish poi.sln
-
-    - name: Test vstest
-      run: dotnet vstest tests/UnitTests/bin/Debug/netcoreapp3.1/UnitTests.dll --collect:"XPlat Code Coverage"
+    - name: Test
+      run: dotnet test poi.sln --filter FullyQualifiedName!~IntegrationTests --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: Copy Coverage To Predictable Location
       run: cp coverage/**/coverage.cobertura.xml coverage.cobertura.xml
