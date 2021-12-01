@@ -1,4 +1,4 @@
-name: .NET CI
+name: .NET CI code coverage
 
 on:
   pull_request:
@@ -22,7 +22,7 @@ jobs:
       run: dotnet build poi.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test poi.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
+      run: dotnet test poi.sln --filter FullyQualifiedName!~IntegrationTests --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory ./coverage
 
     - name: ls
       run: ls -R
