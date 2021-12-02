@@ -60,5 +60,23 @@ namespace poi.Controllers
             return Ok(poi);
 
         }
+
+        [HttpGet(Name = "GetTest")]
+        [Produces("application/json", Type = typeof(POI))]
+        public List<POI> GetTest()
+        {
+            string test = "test";
+
+            string test2 = test.ToString();
+
+            if (test == "test")
+            {
+                return _context.POIs.ToList();
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
