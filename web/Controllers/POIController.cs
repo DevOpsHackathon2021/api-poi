@@ -67,6 +67,8 @@ namespace poi.Controllers
         {
             string test = "test";
 
+            string test2 = test.ToString();
+
             if (test == "test")
             {
                 return _context.POIs.ToList();
