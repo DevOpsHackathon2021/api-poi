@@ -68,6 +68,9 @@ namespace poi.Controllers
             string test = "test";
 
             string test2 = test.ToString();
+            string test3 = test.ToString();
+
+            string conn = "Server=tcp:[SQL_SERVER],1433;Initial Catalog=[SQL_DBNAME];Persist Security Info=False;User ID=[SQL_USER];Password=[SQL_PASSWORD];MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
             if (test == "test")
             {
