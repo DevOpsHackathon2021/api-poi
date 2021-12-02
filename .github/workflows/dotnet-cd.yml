@@ -35,6 +35,7 @@ jobs:
       ACRNAME: 'openhackx6e34ru4acr'
       IMAGETAG: ${{ github.sha }}
       WEBAPP: openhackx6e34ru4poi
+      WEBAPP_RG: openhackx6e34ru4rg
       
     steps:
       - name: Checkout
