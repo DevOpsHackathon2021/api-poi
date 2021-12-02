@@ -1,0 +1,103 @@
+name: .NET CD on commit
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ACRNAME: 'openhackx6e34ru4acr'
+      BASEIMAGETAG: ${{ github.sha }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDS }}
+    
+      - name: Acr Build
+        run: |
+          cd web
+          az acr build --image "devopsoh/api-poi:${BASEIMAGETAG}" --registry $ACRNAME --file Dockerfile .
+
+  deployStaging:
+    runs-on: ubuntu-latest
+    if: success()    # Deploy only when build was successful
+    needs: build     # Wait for deploy
+
+    env:
+      ACRNAME: 'openhackx6e34ru4acr'
+      IMAGETAG: ${{ github.sha }}
+      WEBAPP: openhackx6e34ru4poi
+      WEBAPP_RG: openhackx6e34ru4rg
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDS }}
+
+      - name: Start slot
+        run: az webapp start --slot staging -n $WEBAPP -g $WEBAPP_RG
+
+      - name: Deploy to STAGING Azure WebApp
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.WEBAPP }}
+          slot-name: staging
+          images: "${{ env.ACRNAME }}.azurecr.io/devopsoh/api-poi:${{ env.IMAGETAG }}"
+   
+      - name: Test health
+        run: |
+          chmod +x ./polling.sh
+          ./polling.sh -i ${WEBAPP}-staging.azurewebsites.net/api/healthcheck/poi
+
+      - uses: nashmaniac/create-issue-action@v1.1
+        name: Create Issue Action
+        if: ${{ failure() }}
+        with:
+          title: Deployment to staging failed healthcheck
+          token: ${{secrets.GITHUB_TOKEN}}
+          assignees: ${{github.actor}}
+          labels: worflow-failed
+          body: Deployment to staging failed healthcheck for commit ${{github.sha}}
+
+  deployProduction:
+    if: success()             # Deploy only when staging deploy and health check was successful
+    needs: deployStaging      # Wait for deploy
+    runs-on: ubuntu-latest
+    
+    env:
+      ACRNAME: 'openhackx6e34ru4acr'
+      IMAGETAG: ${{ github.sha }}
+      WEBAPP: openhackx6e34ru4poi
+      WEBAPP_RG: openhackx6e34ru4rg
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDS }}
+
+      - name: Swap STAGING to PRODUCTION in Azure WebApp
+        run: az webapp deployment slot swap -s staging --target-slot production -n $WEBAPP -g $WEBAPP_RG
+   
+      - name: Test health
+        run: |
+          chmod +x ./polling.sh
+          ./polling.sh -i ${WEBAPP}.azurewebsites.net/api/healthcheck/poi
+
+      - name: Shutdown slot
+        run: az webapp stop --slot staging -n $WEBAPP -g $WEBAPP_RG
