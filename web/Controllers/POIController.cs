@@ -68,6 +68,7 @@ namespace poi.Controllers
             string test = "test";
 
             string test2 = test.ToString();
+            string test3 = test.ToString();
 
             if (test == "test")
             {
