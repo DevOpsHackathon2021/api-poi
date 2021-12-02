@@ -47,7 +47,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDS }}
 
       - name: Start slot
-        run: az webapp start -slot staging -n $WEBAPP -g $WEBAPP_RG
+        run: az webapp start --slot staging -n $WEBAPP -g $WEBAPP_RG
 
       - name: Deploy to STAGING Azure WebApp
         uses: Azure/webapps-deploy@v2
@@ -100,4 +100,4 @@ jobs:
           ./polling.sh -i ${WEBAPP}.azurewebsites.net/api/healthcheck/poi
 
       - name: Shutdown slot
-        run: az webapp stop -slot staging -n $WEBAPP -g $WEBAPP_RG
+        run: az webapp stop --slot staging -n $WEBAPP -g $WEBAPP_RG
